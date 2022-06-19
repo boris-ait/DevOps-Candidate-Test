@@ -23,11 +23,12 @@ Good Luck
   3. Prepare a docker compose or a kubernetes deployment file that will:
     a. Deploy two replicas of the app
     b. Contain an nginx or haproxy that will proxy the app so the app will be available from port 80
-    
+    c. For kuberentes - Suppose the app does not support environment variables and there is a json configuration file for the app.
+       How would you configure it from the deploy pipeline to support different deployments (QA | Staging | Prod). What would you recommend for storing passwords. 
+        
  
- Send us the script file, and the docker files
-    
- 
+ Please Send us the script file, the docker files and the answers to 3c (instead you can add the solution to the docker | k8s files)
+     
  Good Luck
   
   

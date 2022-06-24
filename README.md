@@ -21,8 +21,11 @@ Good Luck
   1. Create a container that will contain the app 
   2. Write a command to run the docker on port 5000
   3. Prepare a docker compose or a kubernetes deployment file that will:
+  
     a. Deploy two replicas of the app
+    
     b. Contain an nginx or haproxy that will proxy the app so the app will be available from port 80
+
     c. For kuberentes - Suppose the app does not support environment variables and there is a json configuration file for the app.
        How would you configure it from the deploy pipeline to support different deployments (QA | Staging | Prod). What would you recommend for storing passwords. 
         

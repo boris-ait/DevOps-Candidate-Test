@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-hello-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: node-hello
+  template:
+    metadata:
+      labels:
+        app: node-hello
+    spec:
+      containers:
+        - name: node-hello-app
+          image: borispa/node-hello-app:1.2.3 
+          ports:
+            - containerPort: 3000  # Port on which Node.js app is running
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-proxy-svc
+spec:
+  type: ClusterIP
+  ports:
+    - name: nginx-port
+      port: 80  # Port exposed on the service (external)
+      targetPort: 80
+  selector:
+    app: nginx-node-hello
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-svc
+spec:
+  selector:
+    app: node-hello
+  type: ClusterIP
+  ports:
+  - port: 3000
+    targetPort: 3000
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configmap
+data:
+  nginx.conf: |
+    events { }
+    http {
+      server {
+        listen 80;
+
+        location / {
+          proxy_pass http://backend-svc:3000;  # Proxying requests to the Node.js app running on port 3000
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_set_header Host $host;
+          proxy_cache_bypass $http_upgrade;
+        }
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-node-hello
+  template:
+    metadata:
+      labels:
+        app: nginx-node-hello
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+          ports:
+            - containerPort: 80  # Nginx container port
+          volumeMounts:
+            - mountPath: /etc/nginx/
+              name: nginx-config
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-configmap  

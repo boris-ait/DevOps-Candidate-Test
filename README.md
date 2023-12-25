@@ -22,7 +22,7 @@ Good Luck
 
   1. Create a container that will contain the app 
   
-  After runnig [prep_app.sh](prep_app.sh) got to node-hello/ directory and build the image using [Dockerfile](Dockerfile)
+  After running [prep_app.sh](prep_app.sh) go to node-hello/ directory and build the image using [Dockerfile](Dockerfile)
   ```bash
      cd node-hello/
      docker build -t node-hello-app ../DevOps-Candidate-Test/Dockerfile 
@@ -45,14 +45,14 @@ Good Luck
 
 Regarding 3 c.:
 
-ConfigMaps for different enviromnet could be created as per below example:
+ConfigMaps for different environments could be created as per the below example:
 ```bash
 kubectl create configmap app-config-qa --from-file=config.json=./config-qa.json
 kubectl create configmap app-config-staging --from-file=config.json=./config-staging.json
 kubectl create configmap app-config-prod --from-file=config.json=./config-prod.json
 
 ```
-And mount the appropriate ConfigMap as a volume in pod's deployment configuration.
+And mount the appropriate ConfigMap as a volume in the pod's deployment configuration.
 For example:
 ```yaml
 spec:
@@ -68,9 +68,9 @@ spec:
       configMap:
         name: app-config-<ENVIRONMENT>  # Use the appropriate ConfigMap name for each environment
 ```
-And of course everything could be templated by using helm.
+And of course, everything could be templated by using Helm.
 
-For the secrets Secret Store CSI Driver could be used for example for AWS Secret manager as explained here https://github.com/aws/secrets-store-csi-driver-provider-aws
+For the secrets, Secret Store CSI Driver could be used for example for AWS Secret manager as explained here https://github.com/aws/secrets-store-csi-driver-provider-aws
 
 
  Please Send us the script file, the docker files and the answers to 3c (instead you can add the solution to the docker | k8s files)
